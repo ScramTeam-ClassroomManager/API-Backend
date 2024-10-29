@@ -14,7 +14,6 @@ public class User {
     @Column(name = "ID", nullable = false)
     private long id;
 
-    @UuidGenerator()
     @Column(name = "SERIAL_NUMBER",unique = true,nullable = false)
     private String serialNumber;
 

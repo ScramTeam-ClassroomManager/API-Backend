@@ -9,7 +9,7 @@ class ClassroomManagerApiApplicationTests {
 
 	@Test
 	void contextLoads() {
-		assertEquals(1,4);
+		assertEquals(1,3);
 	}
 
 }

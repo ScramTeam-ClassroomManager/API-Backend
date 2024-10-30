@@ -43,7 +43,7 @@ public class AuthController {
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = APIConstant.REGISTER)
     public ResponseEntity<UserDto> register(@RequestBody RegisterDto registerDto) {
         UserDto createdUser = userService.registerUser(registerDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);

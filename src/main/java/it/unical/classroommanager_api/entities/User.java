@@ -12,10 +12,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "SERIAL_NUMBER",unique = true,nullable = false)
-    private String serialNumber;
+    private Integer serialNumber;
 
     @Column(name = "FIRST_NAME")
     private String firstName;

@@ -2,9 +2,11 @@ package it.unical.classroommanager_api.controller;
 
 import it.unical.classroommanager_api.constant.APIConstant;
 import it.unical.classroommanager_api.dto.LoginDto;
+import it.unical.classroommanager_api.dto.RegisterDto;
 import it.unical.classroommanager_api.dto.UserDto;
 import it.unical.classroommanager_api.security.CustomUserDetailsService;
 import it.unical.classroommanager_api.security.JWTService;
+import it.unical.classroommanager_api.service.IService.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +32,21 @@ public class AuthController {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private IUserService userService;
+
     @PostMapping(value = APIConstant.LOGIN)
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-
         authenticate(Integer.parseInt(loginDto.getSerialNumber()), loginDto.getPassword());
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(String.valueOf(loginDto.getSerialNumber()));
         String token = jwtService.generateToken(userDetails);
-        return new ResponseEntity<String>(token, HttpStatus.OK);
+        return new ResponseEntity<>(token, HttpStatus.OK);
+    }
 
+    @PostMapping(value = "/register")
+    public ResponseEntity<UserDto> register(@RequestBody RegisterDto registerDto) {
+        UserDto createdUser = userService.registerUser(registerDto);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     private void authenticate(int serialNumber, String password) {

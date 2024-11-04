@@ -1,5 +1,6 @@
 package it.unical.classroommanager_api.security;
 
+import it.unical.classroommanager_api.configuration.i18n.MessageLang;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 	
 	@Autowired
 	private CustomUserDetailsService userDetailService;
+
+	@Autowired
+	private MessageLang messageLang;
 	
 	@Autowired
     @Qualifier("handlerExceptionResolver")
@@ -46,7 +50,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 					username = this.jwtService.extractSerialNumber(token);
 				} catch (Exception e) {
 					e.printStackTrace();
-					throw new UsernameNotFoundException("username not found");
+					throw new UsernameNotFoundException(messageLang.getMessage("user.not.found"));
 				} 
 				UserDetails userDetails = this.userDetailService.loadUserByUsername(username);
 				if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

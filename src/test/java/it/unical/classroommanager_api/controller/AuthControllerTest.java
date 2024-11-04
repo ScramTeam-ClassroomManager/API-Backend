@@ -1,6 +1,5 @@
-package it.unical.classroommanager_api;
+package it.unical.classroommanager_api.controller;
 
-import it.unical.classroommanager_api.controller.AuthController;
 import it.unical.classroommanager_api.dto.LoginDto;
 import it.unical.classroommanager_api.dto.RegisterDto;
 import it.unical.classroommanager_api.dto.UserDto;
@@ -18,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,8 +49,8 @@ public class AuthControllerTest {
     @Test
     void testLogin_Successful() {
         LoginDto loginDto = new LoginDto();
-        loginDto.setSerialNumber("1234");
-        loginDto.setPassword("password");
+        loginDto.setSerialNumber("12345");
+        loginDto.setPassword("admin");
 
         UserDetails userDetails = mock(UserDetails.class);
         when(customUserDetailsService.loadUserByUsername(any())).thenReturn(userDetails);
@@ -58,10 +59,10 @@ public class AuthControllerTest {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(null);
 
-        ResponseEntity<String> response = authController.login(loginDto);
+        ResponseEntity<Map<String, String>> response = authController.login(loginDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("testToken", response.getBody());
+        assertEquals("testToken", response.getBody().get("token"));
     }
 
 

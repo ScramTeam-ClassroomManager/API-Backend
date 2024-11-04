@@ -15,7 +15,7 @@ public class User {
     private Long id;
 
     @Column(name = "SERIAL_NUMBER",unique = true,nullable = false)
-    private Integer serialNumber;
+    private int serialNumber;
 
     @Column(name = "FIRST_NAME")
     private String firstName;

@@ -4,6 +4,8 @@ import it.unical.classroommanager_api.constant.APIConstant;
 import it.unical.classroommanager_api.dto.ClassroomDto;
 import it.unical.classroommanager_api.service.IService.IClassService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +20,7 @@ public class ClassroomController {
     private IClassService classService;
 
     @GetMapping(APIConstant.ALLCLASS)
-    public List<ClassroomDto> getAllClassrooms() {
-        return classService.getAllClassrooms();
+    public ResponseEntity<List<ClassroomDto>> getAllClassrooms() {
+        return new ResponseEntity<>(classService.getAllClassrooms(), HttpStatus.OK);
     }
 }

@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 public class RegisterDto {
     @NotNull(message = "serialNumber.not.empty")
-    @Pattern(regexp = "^[0-9]{6}$", message = "serialNumber.invalid")
     private Integer serialNumber;
     private String firstName;
     private String lastName;

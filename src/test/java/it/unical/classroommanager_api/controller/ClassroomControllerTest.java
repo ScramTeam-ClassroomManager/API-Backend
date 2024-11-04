@@ -1,8 +1,7 @@
-package it.unical.classroommanager_api;
+package it.unical.classroommanager_api.controller;
 
 import it.unical.classroommanager_api.dto.ClassroomDto;
 import it.unical.classroommanager_api.service.IService.IClassService;
-import it.unical.classroommanager_api.controller.ClassroomController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -57,7 +56,7 @@ class ClassroomControllerTest {
     void testGetAllClassrooms() {
         when(classService.getAllClassrooms()).thenReturn(classroomDtoList);
 
-        ResponseEntity<List<ClassroomDto>> responseEntity = classroomController.getAllClassrooms();
+        ResponseEntity<List<ClassroomDto>> responseEntity = (ResponseEntity<List<ClassroomDto>>) classroomController.getAllClassrooms();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         List<ClassroomDto> result = responseEntity.getBody();

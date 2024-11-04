@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class ClassroomControllerTest {
+public class ClassroomControllerTest {
 
     @Mock
     private IClassService classService;
@@ -24,48 +24,66 @@ class ClassroomControllerTest {
     @InjectMocks
     private ClassroomController classroomController;
 
-    private List<ClassroomDto> classroomDtoList;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        classroomDtoList = new ArrayList<>();
-        ClassroomDto classroomDto1 = new ClassroomDto();
-        classroomDto1.setId(1L);
-        classroomDto1.setName("MT5");
-        classroomDto1.setCube(101);
-        classroomDto1.setFloor(1);
-        classroomDto1.setCapability(30);
-        classroomDto1.setNumSocket(4);
-        classroomDto1.setProjector(true);
-
-        ClassroomDto classroomDto2 = new ClassroomDto();
-        classroomDto2.setId(2L);
-        classroomDto2.setName("MT1");
-        classroomDto2.setCube(102);
-        classroomDto2.setFloor(1);
-        classroomDto2.setCapability(50);
-        classroomDto2.setNumSocket(6);
-        classroomDto2.setProjector(false);
-
-        classroomDtoList.add(classroomDto1);
-        classroomDtoList.add(classroomDto2);
     }
 
     @Test
     void testGetAllClassrooms() {
-        when(classService.getAllClassrooms()).thenReturn(classroomDtoList);
+        List<ClassroomDto> classrooms = new ArrayList<>();
+        ClassroomDto classroom1 = new ClassroomDto();
+        classroom1.setId(1L);
+        classroom1.setName("MT5");
+        classroom1.setAvailable(true);
 
-        ResponseEntity<List<ClassroomDto>> responseEntity = (ResponseEntity<List<ClassroomDto>>) classroomController.getAllClassrooms();
+        ClassroomDto classroom2 = new ClassroomDto();
+        classroom2.setId(2L);
+        classroom2.setName("MT1");
+        classroom2.setAvailable(true);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<ClassroomDto> result = responseEntity.getBody();
+        classrooms.add(classroom1);
+        classrooms.add(classroom2);
+
+        when(classService.getAllClassrooms()).thenReturn(classrooms);
+
+        List<ClassroomDto> result = classroomController.getAllClassrooms();
+
         assertEquals(2, result.size());
         assertEquals("MT5", result.get(0).getName());
         assertEquals("MT1", result.get(1).getName());
-
         verify(classService, times(1)).getAllClassrooms();
     }
+
+    @Test
+    void updateAvailableStatus_Successful() {
+        long classroomId = 1L;
+
+        ClassroomDto updatedClassroom = new ClassroomDto();
+        updatedClassroom.setId(classroomId);
+        updatedClassroom.setAvailable(false);
+
+        when(classService.updateClassroom(classroomId)).thenReturn(updatedClassroom);
+
+        ResponseEntity<ClassroomDto> response = classroomController.updateAvailableStatus(classroomId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody().isAvailable());
+        verify(classService, times(1)).updateClassroom(classroomId);
+    }
+
+    @Test
+    void testUpdateProjectorStatus_ClassroomNotFound() {
+        long classroomId = 1L;
+
+        when(classService.updateClassroom(classroomId)).thenThrow(new RuntimeException("Nessuna aula trovata con il seguente id: " + classroomId));
+
+        try {
+            classroomController.updateAvailableStatus(classroomId);
+        } catch (RuntimeException e) {
+            assertEquals("Nessuna aula trovata con il seguente id: " + classroomId, e.getMessage());
+        }
+
+        verify(classService, times(1)).updateClassroom(classroomId);
+    }
 }
-
-

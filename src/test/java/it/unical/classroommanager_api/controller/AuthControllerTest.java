@@ -1,5 +1,6 @@
 package it.unical.classroommanager_api.controller;
 
+import it.unical.classroommanager_api.configuration.i18n.MessageLang;
 import it.unical.classroommanager_api.dto.LoginDto;
 import it.unical.classroommanager_api.dto.RegisterDto;
 import it.unical.classroommanager_api.dto.UserDto;
@@ -38,12 +39,16 @@ public class AuthControllerTest {
     @Mock
     private IUserService userService;
 
+    @Mock
+    private MessageLang messageLang;
+
     @InjectMocks
     private AuthController authController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        when(messageLang.getMessage(anyString())).thenReturn("Credenziali errate");
     }
 
     @Test

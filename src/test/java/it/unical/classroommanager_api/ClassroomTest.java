@@ -52,7 +52,7 @@ class ClassServiceTest {
         ClassroomDto classroomDto = new ClassroomDto();
         when(modelMapper.map(any(Classroom.class), eq(ClassroomDto.class))).thenReturn(classroomDto);
 
-        ClassroomDto updatedClassroomDto = classService.updateProjectorStatus(1L);
+        ClassroomDto updatedClassroomDto = classService.updateClassroom(1L);
 
         assertEquals(true, updatedClassroomDto.isProjector());
         verify(classroomRepository, times(1)).findById(1L);
@@ -63,7 +63,7 @@ class ClassServiceTest {
     void testUpdateProjectorStatusClassroomNotFound() {
         when(classroomRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> classService.updateProjectorStatus(1L));
+        assertThrows(RuntimeException.class, () -> classService.updateClassroom(1L));
 
         verify(classroomRepository, times(1)).findById(1L);
         verify(classroomRepository, never()).save(any(Classroom.class));

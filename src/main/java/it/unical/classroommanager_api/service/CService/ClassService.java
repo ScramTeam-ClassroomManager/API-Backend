@@ -28,12 +28,13 @@ public class ClassService implements IClassService {
                 .map(classroom -> modelMapper.map(classroom, ClassroomDto.class))
                 .collect(Collectors.toList());
     }
-
-    public void updateClassroom(long id) {
+    @Override
+    public ClassroomDto updateClassroom(long id) {
         Optional<Classroom> classroom = Optional.ofNullable(classroomRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Classroom not found with id: " + id)));
         classroom.get().setAvailable(false);
         classroomRepository.save(classroom.get());
+        return modelMapper.map(classroom.get(), ClassroomDto.class);
     }
 }
 

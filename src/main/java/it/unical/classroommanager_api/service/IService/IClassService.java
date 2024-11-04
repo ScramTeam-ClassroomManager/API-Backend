@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IClassService {
     List<ClassroomDto> getAllClassrooms();
-    void updateClassroom(long id);
+    ClassroomDto updateClassroom(long id);
 }
 

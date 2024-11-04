@@ -12,4 +12,5 @@ public class ClassroomDto {
     private int capability;
     private int numSocket;
     private boolean projector;
+    private boolean available;
 }

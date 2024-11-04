@@ -24,8 +24,7 @@ public class ClassroomController {
 
     @PutMapping(APIConstant.BOOKING+"/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> updateProjectorStatus(@PathVariable long id) {
-        classService.updateClassroom(id);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<ClassroomDto> updateProjectorStatus(@PathVariable long id) {
+        return new ResponseEntity(classService.updateClassroom(id),HttpStatus.OK);
     }
 }

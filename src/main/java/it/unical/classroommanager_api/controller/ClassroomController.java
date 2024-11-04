@@ -20,8 +20,13 @@ public class ClassroomController {
     private IClassService classService;
 
     @GetMapping(APIConstant.ALLCLASS)
-    public ResponseEntity<List<ClassroomDto>> getAllClassrooms() {
-        List<ClassroomDto> classrooms = classService.getAllClassrooms();
-        return new ResponseEntity<>(classrooms, HttpStatus.OK);
+    public List<ClassroomDto> getAllClassrooms() {
+        return classService.getAllClassrooms();
+    }
+
+    @PutMapping(APIConstant.BOOKING+"/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ClassroomDto> updateProjectorStatus(@PathVariable long id) {
+        return new ResponseEntity(classService.updateClassroom(id),HttpStatus.OK);
     }
 }

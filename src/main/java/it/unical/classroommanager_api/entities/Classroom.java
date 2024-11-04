@@ -30,4 +30,8 @@ public class Classroom {
 
     @Column(name = "PROJECTOR")
     private boolean projector;
+
+    @Column(name = "AVAIALABLE")
+    private boolean available;
+
 }

@@ -5,6 +5,7 @@ import it.unical.classroommanager_api.dto.ClassroomDto;
 import it.unical.classroommanager_api.service.IService.IClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +22,10 @@ public class ClassroomController {
         return classService.getAllClassrooms();
     }
 
-    @PutMapping("/updateProjector/{id}")
+    @PutMapping(APIConstant.BOOKING+"/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ClassroomDto updateProjectorStatus(@PathVariable long id) {
-        return classService.updateProjectorStatus(id);
+    public ResponseEntity<Void> updateProjectorStatus(@PathVariable long id) {
+        classService.updateClassroom(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

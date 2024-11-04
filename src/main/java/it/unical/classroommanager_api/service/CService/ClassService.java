@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,24 +29,11 @@ public class ClassService implements IClassService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public ClassroomDto updateProjectorStatus(long id) {
-        Classroom classroom = classroomRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Classroom not found with id: " + id));
-
-        classroom.setProjector(!classroom.isProjector());
-        classroom = classroomRepository.save(classroom);
-
-        ClassroomDto classroomDto = new ClassroomDto();
-        classroomDto.setId(classroom.getId());
-        classroomDto.setName(classroom.getName());
-        classroomDto.setCube(classroom.getCube());
-        classroomDto.setFloor(classroom.getFloor());
-        classroomDto.setCapability(classroom.getCapability());
-        classroomDto.setNumSocket(classroom.getNumSocket());
-        classroomDto.setProjector(classroom.isProjector());
-
-        return classroomDto;
+    public void updateClassroom(long id) {
+        Optional<Classroom> classroom = Optional.ofNullable(classroomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Classroom not found with id: " + id)));
+        classroom.get().setAvailable(false);
+        classroomRepository.save(classroom.get());
     }
 }
 

@@ -21,6 +21,7 @@ public class ClassroomController {
 
     @GetMapping(APIConstant.ALLCLASS)
     public ResponseEntity<List<ClassroomDto>> getAllClassrooms() {
-        return new ResponseEntity<>(classService.getAllClassrooms(), HttpStatus.OK);
+        List<ClassroomDto> classrooms = classService.getAllClassrooms();
+        return new ResponseEntity<>(classrooms, HttpStatus.OK);
     }
 }

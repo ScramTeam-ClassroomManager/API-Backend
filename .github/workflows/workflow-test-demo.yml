@@ -2,9 +2,9 @@ name: Java CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ Prova ]
   pull_request:
-    branches: [ main ]
+    branches: [ Prova ]
   workflow_dispatch:
 
 jobs:
@@ -15,9 +15,9 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: testuser 
-          POSTGRES_PASSWORD: testpassword 
-          POSTGRES_DB: testdb 
+          POSTGRES_USER: postgres 
+          POSTGRES_PASSWORD: root 
+          POSTGRES_DB: classroom-manager 
         ports:
           - 5432:5432
         options: >-

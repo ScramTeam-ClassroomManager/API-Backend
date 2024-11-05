@@ -2,9 +2,9 @@ name: Java CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ Prova ]
   pull_request:
-    branches: [ main ]
+    branches: [ Prova ]
   workflow_dispatch:
 
 jobs:

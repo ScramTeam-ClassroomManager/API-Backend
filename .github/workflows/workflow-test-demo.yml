@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     services:
@@ -36,9 +36,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'zulu'
+          cache: 'maven'
 
-      - name: Build with Maven
-        run: mvn -B clean install
-
-      - name: Run tests
-        run: mvn test -Dspring.profiles.active=dev-local
+      - name: Build and Test with Maven
+        run: mvn -B clean verify

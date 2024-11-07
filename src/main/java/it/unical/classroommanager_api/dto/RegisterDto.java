@@ -1,9 +1,9 @@
 package it.unical.classroommanager_api.dto;
 
+import it.unical.classroommanager_api.entities.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -17,4 +17,6 @@ public class RegisterDto {
     private String email;
     @NotEmpty(message = "password.not.empty")
     private String password;
+    @NotEmpty(message = "role.not.empty")
+    private Role role;
 }

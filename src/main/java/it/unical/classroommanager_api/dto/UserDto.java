@@ -1,10 +1,7 @@
 package it.unical.classroommanager_api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
+import it.unical.classroommanager_api.entities.Role;
 import lombok.Data;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +16,7 @@ public final class UserDto implements UserDetails {
     private String firstName;
     private String lastName;
     private String email;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -34,4 +32,5 @@ public final class UserDto implements UserDetails {
     public String getUsername() {
         return firstName + lastName;
     }
+
 }

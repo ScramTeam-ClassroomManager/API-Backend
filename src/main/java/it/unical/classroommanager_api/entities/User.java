@@ -30,4 +30,8 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE")
+    private Role role;
+
 }

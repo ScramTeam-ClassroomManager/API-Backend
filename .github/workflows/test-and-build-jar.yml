@@ -2,9 +2,9 @@ name: Maven CI
 
 on:
   push:
-    branches: [ Prova ]
+    branches: [ main ]
   pull_request:
-    branches: [ Prova ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:

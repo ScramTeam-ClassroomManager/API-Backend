@@ -53,7 +53,6 @@ public class AuthController {
     @PostMapping(value = APIConstant.REGISTER)
     public ResponseEntity<UserDto> register(@RequestBody @Valid RegisterDto registerDto) {
         UserDto createdUser = userService.registerUser(registerDto);
-        System.out.println("prova");
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

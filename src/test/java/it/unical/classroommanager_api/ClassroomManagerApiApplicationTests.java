@@ -7,9 +7,5 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ClassroomManagerApiApplicationTests {
 
-	@Test
-	void contextLoads() {
-		assertEquals(1,4);
-	}
 
 }

@@ -5,11 +5,14 @@ public class APIConstant{
     public static final String BASEPATH = "/api/v1";
     public static final String AUTHPATH = "/auth";
     public static final String CLASSPATH = "/class";
+    public static final String REQUESTPATH = "/request";
 
     //END-POINT
     public static final String LOGIN = "/login";
     public static final String REGISTER = "/register";
     public static final String ALLCLASS = "/classrooms";
     public static final String BOOKING = "/booking";
+    public static final String ALLREQUEST = "/requests";
+    public static final String ADDREQUEST = "/addRequest";
 
 }

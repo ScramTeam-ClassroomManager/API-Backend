@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import it.unical.classroommanager_api.dto.UserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.crypto.SecretKey;
+
 @Component
 public class JWTService {
 
@@ -21,6 +24,11 @@ public class JWTService {
 
 	@Value("${jwt.expiration}")
 	private Long expiration;
+
+	private SecretKey getSigningKey() {
+		byte[] keyBytes = jwtKey.getBytes();
+		return Keys.hmacShaKeyFor(keyBytes);
+	}
 
 	public String extractSerialNumber(String token) {
 		return extractClaim(token, Claims::getSubject);
@@ -36,37 +44,42 @@ public class JWTService {
 	}
 
 	private Claims extractAllClaims(String token) {
-		return
-				(Claims)Jwts.parser()
+		return Jwts.parserBuilder()
+				.setSigningKey(getSigningKey())
 				.build()
-				.parseSignedClaims(token)
-				.getPayload();
+				.parseClaimsJws(token)
+				.getBody();
 	}
 
 	public Boolean isTokenExpired(String token) {
-		return Boolean.valueOf(extractExpiration(token).before(new Date()));
+		return extractExpiration(token).before(new Date());
 	}
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
+		if(userDetails instanceof UserDto userDto){
+			claims.put("serialNumber", userDto.getSerialNumber());
+			claims.put("email", userDto.getEmail());
+			claims.put("role", userDto.getRole().name());
+		}
 		return createToken(claims, userDetails.getUsername());
 	}
 
-
 	private String createToken(Map<String, Object> claims, String subject) {
-		return
-				Jwts.builder()
-				.claims(claims)
-				.subject(subject)
-				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + expiration))
-				.signWith(Keys.secretKeyFor(SignatureAlgorithm.HS256)).compact();
+		return Jwts.builder()
+				.setClaims(claims)
+				.setSubject(subject)
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + expiration))
+				.signWith(getSigningKey(), SignatureAlgorithm.HS256)
+				.compact();
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		String username = extractSerialNumber(token);
-		return Boolean.valueOf((username.equals(userDetails.getUsername()) && !isTokenExpired(token).booleanValue()));
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 }
+
 
 

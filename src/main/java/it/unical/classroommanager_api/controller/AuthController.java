@@ -43,7 +43,7 @@ public class AuthController {
     private MessageLang messageLang;
 
     @PostMapping(value = APIConstant.LOGIN)
-    public ResponseEntity<Map<String,String>> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDto loginDto) {
         authenticate(Integer.parseInt(loginDto.getSerialNumber()), loginDto.getPassword());
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(String.valueOf(loginDto.getSerialNumber()));
         String token = jwtService.generateToken(userDetails);
@@ -56,7 +56,6 @@ public class AuthController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    //todo:refactor da mettere in CustomUserDetailsService o in un AthService
     private void authenticate(int serialNumber, String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(serialNumber, password);
         try {
@@ -66,3 +65,4 @@ public class AuthController {
         }
     }
 }
+

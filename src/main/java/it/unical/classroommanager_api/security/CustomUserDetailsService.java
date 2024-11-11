@@ -24,10 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (userDto == null) {
             throw new UsernameNotFoundException(messageLang.getMessage("credentials.not.valid"));
         } else {
-            return new org.springframework.security.core.userdetails.User(
-                    String.valueOf(userDto.getSerialNumber()),
-                    userDto.getPassword(),
-                    userDto.getAuthorities());
+            return userDto;
         }
     }
 }

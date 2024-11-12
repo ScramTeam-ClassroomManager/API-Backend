@@ -18,5 +18,5 @@ public class RegisterDto {
     @NotEmpty(message = "password.not.empty")
     private String password;
     @NotEmpty(message = "role.not.empty")
-    private Role role;
+    private String role;
 }

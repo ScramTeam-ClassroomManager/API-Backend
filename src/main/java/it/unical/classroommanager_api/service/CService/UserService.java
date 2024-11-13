@@ -39,7 +39,6 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto registerUser(RegisterDto registerDto) {
-        // Check if email already exists
         if (userRepository.existsBySerialNumberOrEmail(registerDto.getSerialNumber(),registerDto.getEmail())) {
             throw new EntityExistsException(messageLang.getMessage("serialNumber.email.duplicate"));
         }

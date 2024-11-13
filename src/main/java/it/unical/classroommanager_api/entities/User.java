@@ -1,9 +1,9 @@
 package it.unical.classroommanager_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.unical.classroommanager_api.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @Entity

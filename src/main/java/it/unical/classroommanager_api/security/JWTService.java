@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import it.unical.classroommanager_api.dto.UserDto;
+import it.unical.classroommanager_api.enums.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,7 @@ public class JWTService {
 		if(userDetails instanceof UserDto userDto){
 			claims.put("serialNumber", userDto.getSerialNumber());
 			claims.put("email", userDto.getEmail());
-			claims.put("role", userDto.getRole().name());
+			claims.put("role", userDto.getRole());
 		}
 		return createToken(claims, userDetails.getUsername());
 	}

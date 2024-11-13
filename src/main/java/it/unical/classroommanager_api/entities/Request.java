@@ -1,9 +1,11 @@
 package it.unical.classroommanager_api.entities;
 
+import it.unical.classroommanager_api.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Entity
@@ -27,5 +29,18 @@ public class Request {
 
     @Column(name = "CREATION_DATE", nullable = false)
     private LocalDate creationDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", nullable = false)
+    private Status status;
+
+    @Column(name = "REQUEST_DATE", nullable = false)
+    private LocalDate requestDate;
+
+    @Column(name = "START_HOUR", nullable = false)
+    private LocalTime startHour;
+
+    @Column(name = "END_HOUR", nullable = false)
+    private LocalTime endHour;
 }
 

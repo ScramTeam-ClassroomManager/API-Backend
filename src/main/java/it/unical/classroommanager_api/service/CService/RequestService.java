@@ -74,6 +74,10 @@ public class RequestService implements IRequestService {
                     dto.setClassroomId(request.getClassroom().getId());
                     dto.setUserSerialNumber(request.getUserSerialNumber());
                     dto.setCreationDate(request.getCreationDate());
+                    dto.setRequestDate(request.getRequestDate());
+                    dto.setStartHour(request.getStartHour());
+                    dto.setEndHour(request.getEndHour());
+                    dto.setStatus(request.getStatus());
                     return dto;
                 })
                 .collect(Collectors.toList());

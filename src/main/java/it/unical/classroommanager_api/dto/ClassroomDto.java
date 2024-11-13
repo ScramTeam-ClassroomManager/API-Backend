@@ -1,5 +1,6 @@
 package it.unical.classroommanager_api.dto;
 
+import it.unical.classroommanager_api.enums.ClassroomType;
 import lombok.Data;
 
 @Data
@@ -13,4 +14,5 @@ public class ClassroomDto {
     private int numSocket;
     private boolean projector;
     private boolean available;
+    private ClassroomType type;
 }

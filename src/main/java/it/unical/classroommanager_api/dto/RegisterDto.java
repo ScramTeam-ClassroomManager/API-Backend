@@ -1,6 +1,6 @@
 package it.unical.classroommanager_api.dto;
 
-import it.unical.classroommanager_api.entities.Role;
+import it.unical.classroommanager_api.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

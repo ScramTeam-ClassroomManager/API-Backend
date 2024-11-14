@@ -1,6 +1,7 @@
 package it.unical.classroommanager_api.service.CService;
 
 import it.unical.classroommanager_api.dto.RequestDto;
+import it.unical.classroommanager_api.dto.StatusDto;
 import it.unical.classroommanager_api.entities.Classroom;
 import it.unical.classroommanager_api.entities.Request;
 import it.unical.classroommanager_api.entities.User;
@@ -11,11 +12,13 @@ import it.unical.classroommanager_api.repository.ClassroomRepository;
 import it.unical.classroommanager_api.repository.RequestRepository;
 import it.unical.classroommanager_api.repository.UserRepository;
 import it.unical.classroommanager_api.service.IService.IRequestService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +32,9 @@ public class RequestService implements IRequestService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public RequestDto createRequest(RequestDto requestDto, int userSerialNumber) {
         Request request = new Request();
@@ -82,5 +88,14 @@ public class RequestService implements IRequestService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public RequestDto updateStatusRequest(long id, StatusDto statusDto){
+        Optional<Request> request = Optional.ofNullable(requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Request not found with id: " + id)));
+        request.get().setStatus(statusDto.getStatus());
+        requestRepository.save(request.get());
+        return modelMapper.map(request.get(), RequestDto.class);
+    }
+
 }
 

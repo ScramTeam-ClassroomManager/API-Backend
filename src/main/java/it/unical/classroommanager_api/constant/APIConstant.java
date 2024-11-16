@@ -14,5 +14,5 @@ public class APIConstant{
     public static final String BOOKING = "/booking";
     public static final String ALLREQUEST = "/requests";
     public static final String ADDREQUEST = "/addRequest";
-
+    public static final String UPDATESTATUSREQUEST = "/updateStatusRequest";
 }

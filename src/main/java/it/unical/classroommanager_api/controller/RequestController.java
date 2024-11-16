@@ -2,6 +2,8 @@ package it.unical.classroommanager_api.controller;
 
 import it.unical.classroommanager_api.constant.APIConstant;
 import it.unical.classroommanager_api.dto.RequestDto;
+import it.unical.classroommanager_api.dto.StatusDto;
+import it.unical.classroommanager_api.enums.Status;
 import it.unical.classroommanager_api.security.JWTService;
 import it.unical.classroommanager_api.service.CService.RequestService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +41,12 @@ public class RequestController {
     public ResponseEntity<List<RequestDto>> getAllRequests() {
         List<RequestDto> requests = requestService.getAllRequests();
         return new ResponseEntity<>(requests, HttpStatus.OK);
+    }
+
+    @PutMapping(APIConstant.UPDATESTATUSREQUEST+"/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<RequestDto> updateRequest(@PathVariable long id, @RequestBody StatusDto statusDto) {
+        return new ResponseEntity<>(requestService.updateStatusRequest(id, statusDto), HttpStatus.OK);
     }
 }
 

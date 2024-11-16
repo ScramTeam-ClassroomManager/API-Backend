@@ -1,6 +1,8 @@
 package it.unical.classroommanager_api.controller;
 
 import it.unical.classroommanager_api.dto.RequestDto;
+import it.unical.classroommanager_api.dto.StatusDto;
+import it.unical.classroommanager_api.enums.Status;
 import it.unical.classroommanager_api.security.JWTService;
 import it.unical.classroommanager_api.service.CService.RequestService;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,11 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,8 +36,7 @@ class RequestControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+        MockitoAnnotations.openMocks(this);}
 
     @Test
     void testCreateRequest() {
@@ -78,5 +78,26 @@ class RequestControllerTest {
         assertEquals(requestList, response.getBody());
         verify(requestService, times(1)).getAllRequests();
     }
+
+    @Test
+    void testUpdateRequest() {
+        long requestId = 1L;
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(Status.ACCEPTED);
+
+        RequestDto updatedRequest = new RequestDto();
+        updatedRequest.setId(requestId);
+        updatedRequest.setStatus(Status.ACCEPTED);
+
+        when(requestService.updateStatusRequest(requestId, statusDto)).thenReturn(updatedRequest);
+
+        ResponseEntity<RequestDto> response = requestController.updateRequest(requestId, statusDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(updatedRequest, response.getBody());
+        verify(requestService, times(1)).updateStatusRequest(requestId, statusDto);
+
+    }
+
 }
 

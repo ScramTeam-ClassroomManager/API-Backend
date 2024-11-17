@@ -80,24 +80,46 @@ class RequestControllerTest {
     }
 
     @Test
-    void testUpdateRequest() {
-        long requestId = 1L;
-        StatusDto statusDto = new StatusDto();
-        statusDto.setStatus(Status.ACCEPTED);
+    void testGetAllPendingRequests() {
+        RequestDto pendingRequest1 = new RequestDto();
+        pendingRequest1.setId(1L);
+        pendingRequest1.setReason("Richiesta per laboratorio");
+
+        RequestDto pendingRequest2 = new RequestDto();
+        pendingRequest2.setId(2L);
+        pendingRequest2.setReason("Richiesta per progetto");
+
+        List<RequestDto> pendingRequestList = Arrays.asList(pendingRequest1, pendingRequest2);
+
+        when(requestService.getAllPendingRequests()).thenReturn(pendingRequestList);
+
+        ResponseEntity<List<RequestDto>> response = requestController.getAllPendingRequests();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(pendingRequestList, response.getBody());
+        verify(requestService, times(1)).getAllPendingRequests();
+    }
+
+    @Test
+    void testUpdateRequestStatus() {
+        Long requestId = 1L;
+        Status newStatus = Status.ACCEPTED;
 
         RequestDto updatedRequest = new RequestDto();
         updatedRequest.setId(requestId);
-        updatedRequest.setStatus(Status.ACCEPTED);
+        updatedRequest.setReason("Richiesta per esame di Sistemi operativi");
+        updatedRequest.setStatus(newStatus);
 
-        when(requestService.updateStatusRequest(requestId, statusDto)).thenReturn(updatedRequest);
+        when(requestService.updateRequestStatus(requestId, newStatus)).thenReturn(updatedRequest);
 
-        ResponseEntity<RequestDto> response = requestController.updateRequest(requestId, statusDto);
+        ResponseEntity<RequestDto> response = requestController.updateRequestStatus(requestId, newStatus);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedRequest, response.getBody());
-        verify(requestService, times(1)).updateStatusRequest(requestId, statusDto);
-
+        verify(requestService, times(1)).updateRequestStatus(requestId, newStatus);
     }
+
+
 
 }
 

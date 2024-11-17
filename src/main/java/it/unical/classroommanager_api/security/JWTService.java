@@ -35,6 +35,10 @@ public class JWTService {
 		return extractClaim(token, Claims::getSubject);
 	}
 
+	public String extractRole(String token) {
+		return (String) extractAllClaims(token).get("role");
+	}
+
 	public Date extractExpiration(String token) {
 		return extractClaim(token, Claims::getExpiration);
 	}

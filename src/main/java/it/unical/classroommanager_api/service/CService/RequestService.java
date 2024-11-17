@@ -1,7 +1,6 @@
 package it.unical.classroommanager_api.service.CService;
 
 import it.unical.classroommanager_api.dto.RequestDto;
-import it.unical.classroommanager_api.dto.StatusDto;
 import it.unical.classroommanager_api.entities.Classroom;
 import it.unical.classroommanager_api.entities.Request;
 import it.unical.classroommanager_api.entities.User;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,22 +78,41 @@ public class RequestService implements IRequestService {
                     dto.setClassroomId(request.getClassroom().getId());
                     dto.setUserSerialNumber(request.getUserSerialNumber());
                     dto.setCreationDate(request.getCreationDate());
-                    dto.setRequestDate(request.getRequestDate());
+                    dto.setStatus(request.getStatus());
                     dto.setStartHour(request.getStartHour());
                     dto.setEndHour(request.getEndHour());
-                    dto.setStatus(request.getStatus());
+                    dto.setRequestDate(request.getRequestDate());
                     return dto;
                 })
                 .collect(Collectors.toList());
     }
 
-    public RequestDto updateStatusRequest(long id, StatusDto statusDto){
-        Optional<Request> request = Optional.ofNullable(requestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Request not found with id: " + id)));
-        request.get().setStatus(statusDto.getStatus());
-        requestRepository.save(request.get());
-        return modelMapper.map(request.get(), RequestDto.class);
+    public List<RequestDto> getAllPendingRequests() {
+        return requestRepository.findByStatus(Status.PENDING).stream()
+                .map(request -> {
+                    RequestDto dto = new RequestDto();
+                    dto.setId(request.getId());
+                    dto.setReason(request.getReason());
+                    dto.setClassroomId(request.getClassroom().getId());
+                    dto.setUserSerialNumber(request.getUserSerialNumber());
+                    dto.setCreationDate(request.getCreationDate());
+                    dto.setStatus(request.getStatus());
+                    dto.setStartHour(request.getStartHour());
+                    dto.setEndHour(request.getEndHour());
+                    dto.setRequestDate(request.getRequestDate());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
+    public RequestDto updateRequestStatus(Long requestId, Status status) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found with id: " + requestId));
+
+        request.setStatus(status);
+        Request updatedRequest = requestRepository.save(request);
+
+        return modelMapper.map(updatedRequest, RequestDto.class);
+    }
 }
 

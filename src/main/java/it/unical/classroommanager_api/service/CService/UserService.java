@@ -47,5 +47,6 @@ public class UserService implements IUserService {
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDto.class);
     }
+
 }
 

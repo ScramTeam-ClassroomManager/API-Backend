@@ -39,6 +39,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto registerUser(RegisterDto registerDto) {
+        // Check if email already exists
         if (userRepository.existsBySerialNumberOrEmail(registerDto.getSerialNumber(),registerDto.getEmail())) {
             throw new EntityExistsException(messageLang.getMessage("serialNumber.email.duplicate"));
         }
@@ -47,6 +48,5 @@ public class UserService implements IUserService {
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDto.class);
     }
-
 }
 

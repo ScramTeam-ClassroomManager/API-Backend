@@ -1,9 +1,9 @@
 package it.unical.classroommanager_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.unical.classroommanager_api.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @Entity
@@ -29,9 +29,5 @@ public class User {
     @Column(name = "PASSWORD")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE")
-    private Role role;
 
 }

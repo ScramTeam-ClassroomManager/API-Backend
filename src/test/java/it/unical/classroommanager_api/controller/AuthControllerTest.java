@@ -4,6 +4,7 @@ import it.unical.classroommanager_api.configuration.i18n.MessageLang;
 import it.unical.classroommanager_api.dto.LoginDto;
 import it.unical.classroommanager_api.dto.RegisterDto;
 import it.unical.classroommanager_api.dto.UserDto;
+import it.unical.classroommanager_api.enums.Role;
 import it.unical.classroommanager_api.security.CustomUserDetailsService;
 import it.unical.classroommanager_api.security.JWTService;
 import it.unical.classroommanager_api.service.IService.IUserService;
@@ -95,6 +96,7 @@ public class AuthControllerTest {
         registerDto.setLastName("Cognome");
         registerDto.setEmail("nomcogn@example.com");
         registerDto.setPassword("password");
+        registerDto.setRole("PROFESSOR");
 
         UserDto userDto = new UserDto();
         userDto.setId(1L);
@@ -102,6 +104,7 @@ public class AuthControllerTest {
         userDto.setFirstName("Nome");
         userDto.setLastName("Cognome");
         userDto.setEmail("nomcogn@example.com");
+        userDto.setRole(Role.PROFESSOR);
 
         when(userService.registerUser(any(RegisterDto.class))).thenReturn(userDto);
 
@@ -119,6 +122,7 @@ public class AuthControllerTest {
         registerDto.setLastName("Cognome");
         registerDto.setEmail("nomcogn@example.com");
         registerDto.setPassword("password");
+        registerDto.setRole("PROFESSOR");
 
         when(userService.registerUser(any(RegisterDto.class)))
                 .thenThrow(new RuntimeException("Utente già esistente"));

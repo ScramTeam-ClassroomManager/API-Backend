@@ -1,5 +1,6 @@
 package it.unical.classroommanager_api.entities;
 
+import it.unical.classroommanager_api.enums.ClassroomType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,5 +34,9 @@ public class Classroom {
 
     @Column(name = "AVAILABLE")
     private boolean available;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TYPE")
+    private ClassroomType type;
 
 }

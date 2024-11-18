@@ -1,18 +1,18 @@
 package it.unical.classroommanager_api.dto;
 
-import it.unical.classroommanager_api.enums.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 @Data
-public final class UserDto implements UserDetails, Serializable {
+public final class UserDto implements UserDetails {
     private Long id;
     private Integer serialNumber;
     private String password;
@@ -22,10 +22,16 @@ public final class UserDto implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+        return List.of();
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
     public String getUsername() {
-        return serialNumber.toString();
+        return firstName + lastName;
     }
 }

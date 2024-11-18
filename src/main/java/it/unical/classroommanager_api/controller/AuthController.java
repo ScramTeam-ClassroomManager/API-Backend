@@ -16,7 +16,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -40,7 +43,7 @@ public class AuthController {
     private MessageLang messageLang;
 
     @PostMapping(value = APIConstant.LOGIN)
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Map<String,String>> login(@RequestBody LoginDto loginDto) {
         authenticate(Integer.parseInt(loginDto.getSerialNumber()), loginDto.getPassword());
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(String.valueOf(loginDto.getSerialNumber()));
         String token = jwtService.generateToken(userDetails);
@@ -53,16 +56,7 @@ public class AuthController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @GetMapping(APIConstant.GETCOMPLETENAMEUSER + "/{serialNumber}")
-    public ResponseEntity<Map<String, String>> getUserNameBySerialNumber(@PathVariable int serialNumber) {
-        UserDto userDto = userService.findBySerialNumber(serialNumber);
-        Map<String, String> userInfo = Map.of(
-                "firstName", userDto.getFirstName(),
-                "lastName", userDto.getLastName()
-        );
-        return new ResponseEntity<>(userInfo, HttpStatus.OK);
-    }
-
+    //todo:refactor da mettere in CustomUserDetailsService o in un AthService
     private void authenticate(int serialNumber, String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(serialNumber, password);
         try {
@@ -72,4 +66,3 @@ public class AuthController {
         }
     }
 }
-

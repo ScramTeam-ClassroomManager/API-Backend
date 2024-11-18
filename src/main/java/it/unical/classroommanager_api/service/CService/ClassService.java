@@ -36,22 +36,5 @@ public class ClassService implements IClassService {
         classroomRepository.save(classroom.get());
         return modelMapper.map(classroom.get(), ClassroomDto.class);
     }
-
-    @Override
-    public ClassroomDto addClassroom(ClassroomDto classroomDto) {
-        Classroom classroom = modelMapper.map(classroomDto, Classroom.class);
-        Classroom savedClassroom = classroomRepository.save(classroom);
-        return modelMapper.map(savedClassroom, ClassroomDto.class);
-    }
-
-    @Override
-    public String getClassroomNameById(long id) {
-        Optional<Classroom> classroom = classroomRepository.findById(id);
-        if (classroom.isPresent()) {
-            return classroom.get().getName();
-        } else {
-            return null;
-        }
-    }
 }
 

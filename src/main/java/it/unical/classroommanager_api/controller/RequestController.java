@@ -32,6 +32,9 @@ public class RequestController {
         int userSerialNumber = Integer.parseInt(jwtService.extractSerialNumber(token));
 
         RequestDto createdRequest = requestService.createRequest(requestDto, userSerialNumber);
+        if (createdRequest == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(createdRequest, HttpStatus.CREATED);
     }
 

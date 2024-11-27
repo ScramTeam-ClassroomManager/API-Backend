@@ -9,4 +9,5 @@ public interface IRequestService {
     RequestDto createRequest(RequestDto requestDto, int userSerialNumber);
     List<RequestDto> getAllRequests();
     RequestDto updateRequestStatus(Long requestId, Status status);
+    List<RequestDto> getNonPendingRequests();
 }

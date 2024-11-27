@@ -67,5 +67,19 @@ public class ClassService implements IClassService {
             return null;
         }
     }
+
+    @Override
+    public List<ClassroomDto> getClassroomsByCubeNumber(int cubeNumber) {
+        Optional<Cube> cube = cubeRepository.findByNumber(cubeNumber);
+        if (!cube.isPresent()) {
+            throw new RuntimeException("Cube not found with number: " + cubeNumber);
+        }
+
+        List<Classroom> classrooms = classroomRepository.findByCube(cube.get());
+        return classrooms.stream()
+                .map(classroom -> modelMapper.map(classroom, ClassroomDto.class))
+                .collect(Collectors.toList());
+    }
+
 }
 

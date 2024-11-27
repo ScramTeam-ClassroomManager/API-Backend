@@ -62,4 +62,11 @@ public class ClassroomController {
             return new ResponseEntity<>("Classroom not found", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(APIConstant.CLASSROOMS_BY_CUBE + "/{cubeNumber}")
+    public ResponseEntity<List<ClassroomDto>> getClassroomsByCubeNumber(@PathVariable int cubeNumber) {
+        List<ClassroomDto> classrooms = classService.getClassroomsByCubeNumber(cubeNumber);
+        return new ResponseEntity<>(classrooms, HttpStatus.OK);
+    }
+
 }

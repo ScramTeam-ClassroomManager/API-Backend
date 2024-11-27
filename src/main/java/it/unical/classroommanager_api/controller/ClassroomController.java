@@ -51,6 +51,8 @@ public class ClassroomController {
         return new ResponseEntity<>(createdClassroom, HttpStatus.CREATED);
     }
 
+
+
     @GetMapping(APIConstant.GETCLASSNAME + "/{id}")
     public ResponseEntity<String> getClassroomNameById(@PathVariable long id) {
         String classroomName = classService.getClassroomNameById(id);

@@ -19,6 +19,7 @@ public class APIConstant{
     public static final String GETCLASSNAME = "/getClassName";
     public static final String PENDINGREQUEST = "/pendingRequests";
     public static final String CHANGESTATUSREQUEST = "/changeStatusRequest";
-
-
+    public static final String CUBEPATH = "/cube";
+    public static final String ADDCUBE = "/addCube";
+    public static final String ALLCUBES = "/cubes";
 }

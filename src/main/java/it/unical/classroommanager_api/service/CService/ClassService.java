@@ -2,7 +2,9 @@ package it.unical.classroommanager_api.service.CService;
 
 import it.unical.classroommanager_api.dto.ClassroomDto;
 import it.unical.classroommanager_api.entities.Classroom;
+import it.unical.classroommanager_api.entities.Cube;
 import it.unical.classroommanager_api.repository.ClassroomRepository;
+import it.unical.classroommanager_api.repository.CubeRepository;
 import it.unical.classroommanager_api.service.IService.IClassService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class ClassService implements IClassService {
 
     @Autowired
     private ClassroomRepository classroomRepository;
+
+    @Autowired
+    private CubeRepository cubeRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -40,6 +45,15 @@ public class ClassService implements IClassService {
     @Override
     public ClassroomDto addClassroom(ClassroomDto classroomDto) {
         Classroom classroom = modelMapper.map(classroomDto, Classroom.class);
+
+        Optional<Cube> cube = cubeRepository.findByNumber(classroomDto.getCubeNumber());
+        System.out.println(classroomDto.getCubeNumber());
+        System.out.println(cube);
+        if (!cube.isPresent()) {
+            throw new RuntimeException("Cube not found with number: " + classroomDto.getCubeNumber());
+        }
+        classroom.setCube(cube.get());
+
         Classroom savedClassroom = classroomRepository.save(classroom);
         return modelMapper.map(savedClassroom, ClassroomDto.class);
     }

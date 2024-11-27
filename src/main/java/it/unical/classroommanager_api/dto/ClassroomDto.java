@@ -5,10 +5,9 @@ import lombok.Data;
 
 @Data
 public class ClassroomDto {
-
     private long id;
     private String name;
-    private int cube;
+    private int cubeNumber;
     private int floor;
     private int capability;
     private int numSocket;
@@ -16,3 +15,4 @@ public class ClassroomDto {
     private boolean available;
     private ClassroomType type;
 }
+

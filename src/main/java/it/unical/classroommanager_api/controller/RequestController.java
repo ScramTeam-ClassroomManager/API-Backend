@@ -45,7 +45,6 @@ public class RequestController {
     @GetMapping(APIConstant.NONPENDINGREQUESTS)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RequestDto>> getNonPendingRequests() {
-        System.out.println("DIO");
         List<RequestDto> nonPendingRequests = requestService.getNonPendingRequests();
         return new ResponseEntity<>(nonPendingRequests, HttpStatus.OK);
     }

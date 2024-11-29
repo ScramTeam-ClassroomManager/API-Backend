@@ -10,4 +10,8 @@ public interface IRequestService {
     List<RequestDto> getAllRequests();
     RequestDto updateRequestStatus(Long requestId, Status status);
     List<RequestDto> getNonPendingRequests();
+    List<RequestDto> getRequestsByUser(int userSerialNumber);
+    boolean deleteRequest(Long requestId, int userSerialNumber);
+
+
 }

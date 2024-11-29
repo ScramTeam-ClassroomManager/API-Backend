@@ -65,6 +65,31 @@ public class RequestController {
         RequestDto updatedRequest = requestService.updateRequestStatus(id, status);
         return new ResponseEntity<>(updatedRequest, HttpStatus.OK);
     }
+
+    @GetMapping(APIConstant.USERREQUESTS)
+    public ResponseEntity<List<RequestDto>> getUserRequests(HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+        int userSerialNumber = Integer.parseInt(jwtService.extractSerialNumber(token));
+
+        List<RequestDto> userRequests = requestService.getRequestsByUser(userSerialNumber);
+        return new ResponseEntity<>(userRequests, HttpStatus.OK);
+    }
+
+    @DeleteMapping(APIConstant.DELETEREQUEST + "/{id}")
+    public ResponseEntity<Void> deleteRequest(@PathVariable Long id, HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+        int userSerialNumber = Integer.parseInt(jwtService.extractSerialNumber(token));
+
+        boolean isDeleted = requestService.deleteRequest(id, userSerialNumber);
+
+        if (isDeleted) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+
 }
 
 

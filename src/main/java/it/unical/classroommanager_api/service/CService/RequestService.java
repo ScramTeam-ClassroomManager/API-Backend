@@ -132,5 +132,40 @@ public class RequestService implements IRequestService {
 
         return modelMapper.map(updatedRequest, RequestDto.class);
     }
+
+    public List<RequestDto> getRequestsByUser(int userSerialNumber) {
+        return requestRepository.findByUserSerialNumber(userSerialNumber).stream()
+                .map(request -> {
+                    RequestDto dto = new RequestDto();
+                    dto.setId(request.getId());
+                    dto.setReason(request.getReason());
+                    dto.setClassroomId(request.getClassroom().getId());
+                    dto.setUserSerialNumber(request.getUserSerialNumber());
+                    dto.setCreationDate(request.getCreationDate());
+                    dto.setStatus(request.getStatus());
+                    dto.setStartHour(request.getStartHour());
+                    dto.setEndHour(request.getEndHour());
+                    dto.setRequestDate(request.getRequestDate());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public boolean deleteRequest(Long requestId, int userSerialNumber) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found with id: " + requestId));
+
+        if (request.getUserSerialNumber() == userSerialNumber ||
+                userRepository.findBySerialNumber(userSerialNumber)
+                        .map(User::getRole)
+                        .orElseThrow(() -> new RuntimeException("User not found"))
+                        .equals(Role.ADMIN)) {
+            requestRepository.delete(request);
+            return true;
+        }
+        return false;
+    }
+
+
 }
 

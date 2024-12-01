@@ -10,5 +10,7 @@ public interface IClassService {
     ClassroomDto addClassroom(ClassroomDto classroomDto);
     String getClassroomNameById(long id);
     List<ClassroomDto> getClassroomsByCubeNumber(int cubeNumber);
+    ClassroomDto updateClassroomDetails(long id, ClassroomDto classroomDto);
+
 }
 

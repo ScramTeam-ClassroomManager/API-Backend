@@ -66,6 +66,8 @@ public class JWTService {
 			claims.put("serialNumber", userDto.getSerialNumber());
 			claims.put("email", userDto.getEmail());
 			claims.put("role", userDto.getRole());
+			claims.put("name", userDto.getFirstName());
+			claims.put("surname", userDto.getLastName());
 		}
 		return createToken(claims, userDetails.getUsername());
 	}

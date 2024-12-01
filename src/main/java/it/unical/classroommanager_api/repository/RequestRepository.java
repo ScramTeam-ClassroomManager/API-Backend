@@ -14,19 +14,6 @@ import java.util.List;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findByStatus(Status status);
-
-    @Query("""
-    SELECT CASE WHEN COUNT(r) > 0 THEN TRUE ELSE FALSE END
-    FROM Request r
-    WHERE r.classroom.id = :classroomId
-      AND r.requestDate = :requestDate
-      AND r.status = 'ACCEPTED'
-      AND (
-           (r.startHour < :endHour AND r.endHour > :startHour)
-      )
-""")
-    boolean existsOverlappingRequest(@Param("classroomId") Long classroomId,
-                                     @Param("requestDate") LocalDate requestDate,
-                                     @Param("startHour") LocalTime startHour,
-                                     @Param("endHour") LocalTime endHour);
+    List<Request> findByStatusNot(Status status);
+    List<Request> findByUserSerialNumber(int userSerialNumber);
 }

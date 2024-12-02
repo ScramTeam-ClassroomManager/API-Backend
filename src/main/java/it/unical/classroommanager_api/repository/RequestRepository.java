@@ -16,7 +16,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findByStatus(Status status);
     List<Request> findByStatusNot(Status status);
     List<Request> findByUserSerialNumber(int userSerialNumber);
-
+  
     @Query("""
     SELECT CASE WHEN COUNT(r) > 0 THEN TRUE ELSE FALSE END
     FROM Request r

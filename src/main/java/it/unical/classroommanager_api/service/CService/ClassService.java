@@ -81,5 +81,25 @@ public class ClassService implements IClassService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public ClassroomDto updateClassroomDetails(long id, ClassroomDto classroomDto) {
+        Classroom existingClassroom = classroomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Classroom not found with id: " + id));
+
+        existingClassroom.setName(classroomDto.getName());
+        existingClassroom.setAvailable(classroomDto.isAvailable());
+
+        Optional<Cube> cube = cubeRepository.findByNumber(classroomDto.getCubeNumber());
+        if (!cube.isPresent()) {
+            throw new RuntimeException("Cube not found with number: " + classroomDto.getCubeNumber());
+        }
+        existingClassroom.setCube(cube.get());
+
+        Classroom updatedClassroom = classroomRepository.save(existingClassroom);
+
+        return modelMapper.map(updatedClassroom, ClassroomDto.class);
+    }
+
+
 }
 

@@ -14,8 +14,12 @@ public class APIConstant{
     public static final String ALLCLASS = "/classrooms";
     public static final String BOOKING = "/booking";
     public static final String CLASSROOMS_BY_CUBE = "/classroomsByCube";
+    public static final String UPDATECLASS = "/updateClass";
     public static final String ALLREQUEST = "/requests";
+    public static final String NONPENDINGREQUESTS = "/nonPendingRequests";
     public static final String ADDREQUEST = "/addRequest";
+    public static final String USERREQUESTS = "/userRequests";
+    public static final String DELETEREQUEST = "/deleteRequest";
     public static final String ADDCLASS = "/addClass";
     public static final String GETCLASSNAME = "/getClassName";
     public static final String PENDINGREQUEST = "/pendingRequests";

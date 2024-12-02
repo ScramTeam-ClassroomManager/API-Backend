@@ -1,19 +1,24 @@
 package it.unical.classroommanager_api.controller;
 
 import it.unical.classroommanager_api.dto.ClassroomDto;
+import it.unical.classroommanager_api.security.JWTService;
 import it.unical.classroommanager_api.service.IService.IClassService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class ClassroomControllerTest {
@@ -23,6 +28,12 @@ public class ClassroomControllerTest {
 
     @InjectMocks
     private ClassroomController classroomController;
+
+    @Mock
+    private JWTService jwtService;
+
+    @Mock
+    private HttpServletRequest request;
 
     @BeforeEach
     void setUp() {
@@ -86,4 +97,39 @@ public class ClassroomControllerTest {
 
         verify(classService, times(1)).updateClassroom(classroomId);
     }
+
+    @Test
+    void addClassroom_WhenAdmin_ShouldReturnCreated() {
+
+        ClassroomDto classroomDto = new ClassroomDto();
+        classroomDto.setName("Aula Magna");
+        classroomDto.setCubeNumber(1);
+
+        when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer fake_token");
+        when(jwtService.extractRole("fake_token")).thenReturn("ADMIN");
+        when(classService.addClassroom(any(ClassroomDto.class))).thenReturn(classroomDto);
+
+        ResponseEntity<ClassroomDto> response = classroomController.addClassroom(classroomDto, request);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(classroomDto, response.getBody());
+    }
+
+    @Test
+    void addClassroom_WhenNotAdmin_ShouldThrowAccessDeniedException() {
+
+        ClassroomDto classroomDto = new ClassroomDto();
+        classroomDto.setName("Aula Magna");
+        classroomDto.setCubeNumber(1);
+
+        when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer fake_token");
+        when(jwtService.extractRole("fake_token")).thenReturn("USER"); // Non admin
+
+        assertThrows(AccessDeniedException.class, () -> {
+            classroomController.addClassroom(classroomDto, request);
+        });
+
+        verify(classService, never()).addClassroom(any());
+    }
+
 }

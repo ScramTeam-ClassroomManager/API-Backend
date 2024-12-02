@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,6 +52,8 @@ public class ClassroomController {
         return new ResponseEntity<>(createdClassroom, HttpStatus.CREATED);
     }
 
+
+
     @GetMapping(APIConstant.GETCLASSNAME + "/{id}")
     public ResponseEntity<String> getClassroomNameById(@PathVariable long id) {
         String classroomName = classService.getClassroomNameById(id);
@@ -60,4 +63,29 @@ public class ClassroomController {
             return new ResponseEntity<>("Classroom not found", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(APIConstant.CLASSROOMS_BY_CUBE + "/{cubeNumber}")
+    public ResponseEntity<List<ClassroomDto>> getClassroomsByCubeNumber(@PathVariable int cubeNumber) {
+        List<ClassroomDto> classrooms = classService.getClassroomsByCubeNumber(cubeNumber);
+        return new ResponseEntity<>(classrooms, HttpStatus.OK);
+    }
+
+    @PutMapping(APIConstant.UPDATECLASS + "/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ClassroomDto> updateClassroomDetails(
+            @PathVariable long id,
+            @RequestBody @Valid ClassroomDto classroomDto,
+            HttpServletRequest request) {
+
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+        String role = jwtService.extractRole(token);
+        if (!role.equals("ADMIN")) {
+            throw new AccessDeniedException("Access denied: User does not have ADMIN privileges.");
+        }
+
+        ClassroomDto updatedClassroom = classService.updateClassroomDetails(id, classroomDto);
+        return new ResponseEntity<>(updatedClassroom, HttpStatus.OK);
+    }
+
+
 }

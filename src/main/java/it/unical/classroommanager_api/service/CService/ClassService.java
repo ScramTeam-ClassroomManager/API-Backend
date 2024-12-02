@@ -2,7 +2,9 @@ package it.unical.classroommanager_api.service.CService;
 
 import it.unical.classroommanager_api.dto.ClassroomDto;
 import it.unical.classroommanager_api.entities.Classroom;
+import it.unical.classroommanager_api.entities.Cube;
 import it.unical.classroommanager_api.repository.ClassroomRepository;
+import it.unical.classroommanager_api.repository.CubeRepository;
 import it.unical.classroommanager_api.service.IService.IClassService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class ClassService implements IClassService {
 
     @Autowired
     private ClassroomRepository classroomRepository;
+
+    @Autowired
+    private CubeRepository cubeRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -40,6 +45,15 @@ public class ClassService implements IClassService {
     @Override
     public ClassroomDto addClassroom(ClassroomDto classroomDto) {
         Classroom classroom = modelMapper.map(classroomDto, Classroom.class);
+
+        Optional<Cube> cube = cubeRepository.findByNumber(classroomDto.getCubeNumber());
+        System.out.println(classroomDto.getCubeNumber());
+        System.out.println(cube);
+        if (!cube.isPresent()) {
+            throw new RuntimeException("Cube not found with number: " + classroomDto.getCubeNumber());
+        }
+        classroom.setCube(cube.get());
+
         Classroom savedClassroom = classroomRepository.save(classroom);
         return modelMapper.map(savedClassroom, ClassroomDto.class);
     }
@@ -53,5 +67,39 @@ public class ClassService implements IClassService {
             return null;
         }
     }
+
+    @Override
+    public List<ClassroomDto> getClassroomsByCubeNumber(int cubeNumber) {
+        Optional<Cube> cube = cubeRepository.findByNumber(cubeNumber);
+        if (!cube.isPresent()) {
+            throw new RuntimeException("Cube not found with number: " + cubeNumber);
+        }
+
+        List<Classroom> classrooms = classroomRepository.findByCube(cube.get());
+        return classrooms.stream()
+                .map(classroom -> modelMapper.map(classroom, ClassroomDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ClassroomDto updateClassroomDetails(long id, ClassroomDto classroomDto) {
+        Classroom existingClassroom = classroomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Classroom not found with id: " + id));
+
+        existingClassroom.setName(classroomDto.getName());
+        existingClassroom.setAvailable(classroomDto.isAvailable());
+
+        Optional<Cube> cube = cubeRepository.findByNumber(classroomDto.getCubeNumber());
+        if (!cube.isPresent()) {
+            throw new RuntimeException("Cube not found with number: " + classroomDto.getCubeNumber());
+        }
+        existingClassroom.setCube(cube.get());
+
+        Classroom updatedClassroom = classroomRepository.save(existingClassroom);
+
+        return modelMapper.map(updatedClassroom, ClassroomDto.class);
+    }
+
+
 }
 

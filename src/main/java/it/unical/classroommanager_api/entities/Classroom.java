@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="CLASSROOMS")
+@Table(name = "CLASSROOMS")
 public class Classroom {
 
     @Id
@@ -17,8 +17,9 @@ public class Classroom {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "CUBE", nullable = false)
-    private int cube;
+    @ManyToOne
+    @JoinColumn(name = "CUBE_NUMBER", referencedColumnName = "NUMBER", nullable = false)
+    private Cube cube;
 
     @Column(name = "FLOOR", nullable = false)
     private int floor;
@@ -38,5 +39,4 @@ public class Classroom {
     @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     private ClassroomType type;
-
 }

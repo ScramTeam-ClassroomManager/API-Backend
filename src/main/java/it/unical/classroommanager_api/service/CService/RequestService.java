@@ -51,6 +51,10 @@ public class RequestService implements IRequestService {
         request.setStartHour(requestDto.getStartHour());
         request.setEndHour(requestDto.getEndHour());
 
+        if (requestRepository.existsOverlappingRequest(classroom.getId(), requestDto.getRequestDate(), requestDto.getStartHour(), requestDto.getEndHour())) {
+            return null;
+        }
+
         if (classroom.getType() == ClassroomType.AUDITORIUM) {
             request.setStatus(Status.PENDING);
         } else {

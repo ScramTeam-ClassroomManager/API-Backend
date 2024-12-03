@@ -88,6 +88,11 @@ public class ClassService implements IClassService {
 
         existingClassroom.setName(classroomDto.getName());
         existingClassroom.setAvailable(classroomDto.isAvailable());
+        existingClassroom.setCapability(classroomDto.getCapability());
+        existingClassroom.setFloor(classroomDto.getFloor());
+        existingClassroom.setProjector(classroomDto.isProjector());
+        existingClassroom.setNumSocket(classroomDto.getNumSocket());
+        existingClassroom.setType(classroomDto.getType());
 
         Optional<Cube> cube = cubeRepository.findByNumber(classroomDto.getCubeNumber());
         if (!cube.isPresent()) {

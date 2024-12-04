@@ -6,7 +6,9 @@ public class URLConstant {
             "/api/v1/auth/**",
             "/api/v1/class/**",
             "/api/v1/request/**",
-            "/api/v1/cube/**"
+            "/api/v1/cube/**",
+            "/api/v1/department/**",
+
     };
 }
 

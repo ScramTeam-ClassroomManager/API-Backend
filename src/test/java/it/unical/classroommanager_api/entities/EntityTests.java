@@ -14,12 +14,18 @@ class EntityTests {
     @Test
     void testCubeFields() {
         Cube cube = new Cube();
+        Department department = new Department();
+        department.setId(1);
+        department.setDepartment("Computer Science");
+
         cube.setNumber(1);
-        cube.setDepartment("Computer Science");
+        cube.setDepartment(department);
 
         assertEquals(1, cube.getNumber());
-        assertEquals("Computer Science", cube.getDepartment());
+        assertEquals("Computer Science", cube.getDepartment().getDepartment());
+        assertEquals(1, cube.getDepartment().getId());
     }
+
 
     @Test
     void testClassroomFields() {

@@ -39,7 +39,6 @@ public class RequestController {
     }
 
     @GetMapping(APIConstant.ALLREQUEST)
-    @PreAuthorize("hasRole('PROFESSOR')")
     public ResponseEntity<List<RequestDto>> getAllRequests() {
         List<RequestDto> requests = requestService.getAllRequests();
         return new ResponseEntity<>(requests, HttpStatus.OK);

@@ -12,6 +12,7 @@ public interface IClassService {
     List<ClassroomDto> getClassroomsByCubeNumber(int cubeNumber);
     ClassroomDto updateClassroomDetails(long id, ClassroomDto classroomDto);
     List<ClassroomDto> getClassroomsByDepartment(long departmentId);
+    ClassroomDto getClassroomByName(String name);
 
 
 }

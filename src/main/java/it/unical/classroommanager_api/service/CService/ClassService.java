@@ -38,6 +38,7 @@ public class ClassService implements IClassService {
                 .map(classroom -> modelMapper.map(classroom, ClassroomDto.class))
                 .collect(Collectors.toList());
     }
+
     @Override
     public ClassroomDto updateClassroom(long id) {
         Optional<Classroom> classroom = Optional.ofNullable(classroomRepository.findById(id)
@@ -121,6 +122,10 @@ public class ClassService implements IClassService {
                 .collect(Collectors.toList());
     }
 
-
+    @Override
+    public ClassroomDto getClassroomByName(String name) {
+        Optional<Classroom> classroom = classroomRepository.findByName(name);
+        return classroom.map(value -> modelMapper.map(value, ClassroomDto.class)).orElse(null);
+    }
 }
 

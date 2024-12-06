@@ -93,5 +93,11 @@ public class ClassroomController {
         return new ResponseEntity<>(classrooms, HttpStatus.OK);
     }
 
+    @GetMapping(APIConstant.CLASSROOM_BY_NAME + "/{name}")
+    public ResponseEntity<ClassroomDto> getClassroomByName(@PathVariable String name) {
+        ClassroomDto classroom = classService.getClassroomByName(name);
+        return new ResponseEntity<>(classroom, HttpStatus.OK);
+    }
+
 
 }

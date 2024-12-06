@@ -14,4 +14,5 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
     Optional<Classroom> findClassroomById(Long id);
     List<Classroom> findByCube(Cube cube);
     List<Classroom> findByCube_Department(Department department);
+    Optional<Classroom> findByName(String name);
 }

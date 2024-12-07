@@ -27,4 +27,9 @@ public class DepartmentService implements IDepartmentService {
                 .map(department -> modelMapper.map(department, DepartmentDto.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String getDepartmentByClassroom(long id) {
+        return departmentRepository.findByClassrromId(String.valueOf(id));
+    }
 }

@@ -31,4 +31,5 @@ public class APIConstant{
     public static final String ALLDEPARTMENTS = "/allDepartments";
     public static final String CLASSROOMS_BY_DEPARTMENT = "/classroomsByDepartment";
     public static final String CLASSROOM_BY_NAME = "/classroomByName";
+    public static final String GETDEPARTMENTBYCLASSROOM = "/departmentByClassroom";
 }

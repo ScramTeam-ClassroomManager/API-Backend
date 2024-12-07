@@ -7,4 +7,5 @@ import java.util.List;
 public interface IDepartmentService {
 
     List<DepartmentDto> getAllDepartments();
+    String getDepartmentByClassroom(long id);
 }

@@ -19,4 +19,9 @@ public class DepartmentController {
     public List<DepartmentDto> getAllDepartments() {
         return departmentService.getAllDepartments();
     }
+
+    @GetMapping(APIConstant.GETDEPARTMENTBYCLASSROOM + "/{id}")
+    public String getDepartmentByClassroom(@PathVariable long id) {
+        return departmentService.getDepartmentByClassroom(id);
+    }
 }

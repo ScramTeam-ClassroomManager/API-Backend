@@ -27,4 +27,5 @@ public class APIConstant{
     public static final String CUBEPATH = "/cube";
     public static final String ADDCUBE = "/addCube";
     public static final String ALLCUBES = "/cubes";
+    public static final String ACCEPTED_REQUESTS_OF_CLASSROOM = "/acceptedRequestsOfClassroom";
 }

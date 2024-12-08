@@ -3,8 +3,10 @@ package it.unical.classroommanager_api.service.CService;
 import it.unical.classroommanager_api.dto.ClassroomDto;
 import it.unical.classroommanager_api.entities.Classroom;
 import it.unical.classroommanager_api.entities.Cube;
+import it.unical.classroommanager_api.entities.Department;
 import it.unical.classroommanager_api.repository.ClassroomRepository;
 import it.unical.classroommanager_api.repository.CubeRepository;
+import it.unical.classroommanager_api.repository.DepartmentRepository;
 import it.unical.classroommanager_api.service.IService.IClassService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class ClassService implements IClassService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
     @Override
     public List<ClassroomDto> getAllClassrooms() {
         List<Classroom> classrooms = classroomRepository.findAll();
@@ -33,6 +38,7 @@ public class ClassService implements IClassService {
                 .map(classroom -> modelMapper.map(classroom, ClassroomDto.class))
                 .collect(Collectors.toList());
     }
+
     @Override
     public ClassroomDto updateClassroom(long id) {
         Optional<Classroom> classroom = Optional.ofNullable(classroomRepository.findById(id)
@@ -105,6 +111,21 @@ public class ClassService implements IClassService {
         return modelMapper.map(updatedClassroom, ClassroomDto.class);
     }
 
+    @Override
+    public List<ClassroomDto> getClassroomsByDepartment(long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new RuntimeException("Department not found with id: " + departmentId));
 
+        List<Classroom> classrooms = classroomRepository.findByCube_Department(department);
+        return classrooms.stream()
+                .map(classroom -> modelMapper.map(classroom, ClassroomDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ClassroomDto getClassroomByName(String name) {
+        Optional<Classroom> classroom = classroomRepository.findByName(name);
+        return classroom.map(value -> modelMapper.map(value, ClassroomDto.class)).orElse(null);
+    }
 }
 

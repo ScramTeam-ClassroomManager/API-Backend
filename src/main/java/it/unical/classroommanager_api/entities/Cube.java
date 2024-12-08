@@ -12,7 +12,7 @@ public class Cube {
     @Column(name = "NUMBER", nullable = false, unique = true)
     private int number;
 
-    @Column(name = "DEPARTMENT", nullable = false)
-    private String department;
+    @ManyToOne
+    @JoinColumn(name = "DEPARTMENT_ID", nullable = false)
+    private Department department;
 }
-

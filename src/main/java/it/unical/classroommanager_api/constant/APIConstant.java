@@ -6,6 +6,7 @@ public class APIConstant{
     public static final String AUTHPATH = "/auth";
     public static final String CLASSPATH = "/class";
     public static final String REQUESTPATH = "/request";
+    public static final String DEPARTMENTPATH = "/department";
 
     //END-POINT
     public static final String LOGIN = "/login";
@@ -27,4 +28,10 @@ public class APIConstant{
     public static final String CUBEPATH = "/cube";
     public static final String ADDCUBE = "/addCube";
     public static final String ALLCUBES = "/cubes";
+    public static final String ALLDEPARTMENTS = "/allDepartments";
+    public static final String CLASSROOMS_BY_DEPARTMENT = "/classroomsByDepartment";
+    public static final String CLASSROOM_BY_NAME = "/classroomByName";
+    public static final String GETDEPARTMENTBYCLASSROOM = "/departmentByClassroom";
+    public static final String ACCEPTED_REQUESTS_OF_CLASSROOM = "/acceptedRequestsOfClassroom";
+
 }

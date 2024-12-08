@@ -91,6 +91,14 @@ public class RequestController {
         }
     }
 
+    @PutMapping(APIConstant.ACCEPTED_REQUESTS_OF_CLASSROOM + "/{id}")
+    public ResponseEntity<List<RequestDto>> getAcceptedClassroomRequests(
+            @PathVariable Long id
+    ) {
+        List<RequestDto> requests = requestService.getAcceptedClassroomRequests(id);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
+    }
+
 
 }
 

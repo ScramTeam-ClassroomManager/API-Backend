@@ -170,6 +170,24 @@ public class RequestService implements IRequestService {
         return false;
     }
 
+    public List<RequestDto> getAcceptedClassroomRequests(Long id){
+        return requestRepository.findByClassroomIdAndStatus(id, Status.ACCEPTED).stream()
+                .map(request -> {
+                    RequestDto dto = new RequestDto();
+                    dto.setId(request.getId());
+                    dto.setReason(request.getReason());
+                    dto.setClassroomId(request.getClassroom().getId());
+                    dto.setUserSerialNumber(request.getUserSerialNumber());
+                    dto.setCreationDate(request.getCreationDate());
+                    dto.setStatus(request.getStatus());
+                    dto.setStartHour(request.getStartHour());
+                    dto.setEndHour(request.getEndHour());
+                    dto.setRequestDate(request.getRequestDate());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
 
 }
 

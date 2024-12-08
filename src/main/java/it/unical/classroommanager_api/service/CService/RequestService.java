@@ -37,6 +37,7 @@ public class RequestService implements IRequestService {
     public RequestDto createRequest(RequestDto requestDto, int userSerialNumber) {
         Request request = new Request();
         request.setReason(requestDto.getReason());
+        request.setAdminResponse(requestDto.getAdminResponse());
 
         Classroom classroom = classroomRepository.findById(requestDto.getClassroomId())
                 .orElseThrow(() -> new RuntimeException("Classroom not found"));
@@ -55,16 +56,7 @@ public class RequestService implements IRequestService {
             return null;
         }
 
-        if (classroom.getType() == ClassroomType.AUDITORIUM) {
-            request.setStatus(Status.PENDING);
-        } else {
-            if (user.getRole() == Role.PROFESSOR) {
-                request.setStatus(Status.ACCEPTED);
-            } else {
-                request.setStatus(Status.PENDING);
-            }
-        }
-
+        request.setStatus(Status.PENDING);
 
         Request savedRequest = requestRepository.save(request);
         requestDto.setId(savedRequest.getId());
@@ -72,6 +64,7 @@ public class RequestService implements IRequestService {
 
         return requestDto;
     }
+
 
     public List<RequestDto> getAllRequests() {
         return requestRepository.findAll().stream()
@@ -100,6 +93,7 @@ public class RequestService implements IRequestService {
                     dto.setClassroomId(request.getClassroom().getId());
                     dto.setUserSerialNumber(request.getUserSerialNumber());
                     dto.setCreationDate(request.getCreationDate());
+                    dto.setAdminResponse(request.getAdminResponse());
                     dto.setStatus(request.getStatus());
                     dto.setStartHour(request.getStartHour());
                     dto.setEndHour(request.getEndHour());
@@ -127,15 +121,18 @@ public class RequestService implements IRequestService {
                 .collect(Collectors.toList());
     }
 
-    public RequestDto updateRequestStatus(Long requestId, Status status) {
+    public RequestDto updateRequestStatus(Long requestId, Status status, String adminResponse) {
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found with id: " + requestId));
 
         request.setStatus(status);
+        request.setAdminResponse(adminResponse);
+
         Request updatedRequest = requestRepository.save(request);
 
         return modelMapper.map(updatedRequest, RequestDto.class);
     }
+
 
     public List<RequestDto> getRequestsByUser(int userSerialNumber) {
         return requestRepository.findByUserSerialNumber(userSerialNumber).stream()
@@ -146,6 +143,7 @@ public class RequestService implements IRequestService {
                     dto.setClassroomId(request.getClassroom().getId());
                     dto.setUserSerialNumber(request.getUserSerialNumber());
                     dto.setCreationDate(request.getCreationDate());
+                    dto.setAdminResponse(request.getAdminResponse());
                     dto.setStatus(request.getStatus());
                     dto.setStartHour(request.getStartHour());
                     dto.setEndHour(request.getEndHour());

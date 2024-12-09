@@ -104,20 +104,23 @@ class RequestControllerTest {
     void testUpdateRequestStatus() {
         Long requestId = 1L;
         Status newStatus = Status.ACCEPTED;
+        String adminResponse = "Approved for the exam request";
 
         RequestDto updatedRequest = new RequestDto();
         updatedRequest.setId(requestId);
         updatedRequest.setReason("Richiesta per esame di Sistemi operativi");
         updatedRequest.setStatus(newStatus);
+        updatedRequest.setAdminResponse(adminResponse);
 
-        when(requestService.updateRequestStatus(requestId, newStatus)).thenReturn(updatedRequest);
+        when(requestService.updateRequestStatus(requestId, newStatus, adminResponse)).thenReturn(updatedRequest);
 
-        ResponseEntity<RequestDto> response = requestController.updateRequestStatus(requestId, newStatus);
+        ResponseEntity<RequestDto> response = requestController.updateRequestStatus(requestId, newStatus, adminResponse);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedRequest, response.getBody());
-        verify(requestService, times(1)).updateRequestStatus(requestId, newStatus);
+        verify(requestService, times(1)).updateRequestStatus(requestId, newStatus, adminResponse);
     }
+
 
 
 

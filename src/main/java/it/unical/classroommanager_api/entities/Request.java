@@ -30,6 +30,9 @@ public class Request {
     @Column(name = "CREATION_DATE", nullable = false)
     private LocalDate creationDate;
 
+    @Column(name = "ADMIN_RESPONSE", length = 1000)
+    private String adminResponse;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     private Status status;

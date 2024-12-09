@@ -58,15 +58,17 @@ public class RequestController {
         return new ResponseEntity<>(pendingRequests, HttpStatus.OK);
     }
 
-    @PutMapping(APIConstant.CHANGESTATUSREQUEST + "/{id}" +  "/{status}")
+    @PutMapping(APIConstant.CHANGESTATUSREQUEST + "/{id}" + "/{status}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RequestDto> updateRequestStatus(
             @PathVariable Long id,
-            @RequestParam Status status
+            @RequestParam Status status,
+            @RequestParam String adminResponse
     ) {
-        RequestDto updatedRequest = requestService.updateRequestStatus(id, status);
+        RequestDto updatedRequest = requestService.updateRequestStatus(id, status, adminResponse);
         return new ResponseEntity<>(updatedRequest, HttpStatus.OK);
     }
+
 
     @GetMapping(APIConstant.USERREQUESTS)
     public ResponseEntity<List<RequestDto>> getUserRequests(HttpServletRequest request) {

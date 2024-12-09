@@ -18,5 +18,5 @@ public class RequestDto {
     private LocalTime startHour;
     private LocalTime endHour;
     private LocalDate requestDate;
+    private String adminResponse;
 }
-

@@ -13,6 +13,7 @@ public interface IClassService {
     ClassroomDto updateClassroomDetails(long id, ClassroomDto classroomDto);
     List<ClassroomDto> getClassroomsByDepartment(long departmentId);
     ClassroomDto getClassroomByName(String name);
+    List<ClassroomDto> getFilteredClassrooms(Integer cubeNumber, Integer capability, Integer plugs, Boolean projector, String type, Long departmentId);
 
 
 }

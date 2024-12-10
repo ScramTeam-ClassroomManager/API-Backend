@@ -21,13 +21,16 @@ public class APIConstant{
     public static final String ADDREQUEST = "/addRequest";
     public static final String USERREQUESTS = "/userRequests";
     public static final String DELETEREQUEST = "/deleteRequest";
+
     public static final String ADDCLASS = "/addClass";
     public static final String GETCLASSNAME = "/getClassName";
+    public static final String CLASSROOMS_FILTERED = "/classroomsFiltered";
     public static final String PENDINGREQUEST = "/pendingRequests";
     public static final String CHANGESTATUSREQUEST = "/changeStatusRequest";
     public static final String CUBEPATH = "/cube";
     public static final String ADDCUBE = "/addCube";
     public static final String ALLCUBES = "/cubes";
+    public static final String CUBES_BY_DEPARTMENT = "/cubesByDepartment";
     public static final String ALLDEPARTMENTS = "/allDepartments";
     public static final String CLASSROOMS_BY_DEPARTMENT = "/classroomsByDepartment";
     public static final String CLASSROOM_BY_NAME = "/classroomByName";

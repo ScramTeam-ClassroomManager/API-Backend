@@ -56,7 +56,18 @@ public class RequestService implements IRequestService {
             return null;
         }
 
-        request.setStatus(Status.PENDING);
+        if (classroom.getType() == ClassroomType.AUDITORIUM && user.getRole() == Role.ADMIN) {
+            request.setStatus(Status.ACCEPTED);
+
+        } else if (classroom.getType() == ClassroomType.AUDITORIUM ) {
+            request.setStatus(Status.PENDING);
+        } else {
+            if (user.getRole() == Role.PROFESSOR || user.getRole() == Role.ADMIN) {
+                request.setStatus(Status.ACCEPTED);
+            } else {
+                request.setStatus(Status.PENDING);
+            }
+        }
 
         Request savedRequest = requestRepository.save(request);
         requestDto.setId(savedRequest.getId());

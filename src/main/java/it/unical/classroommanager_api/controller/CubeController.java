@@ -29,4 +29,11 @@ public class CubeController {
         return new ResponseEntity<>(cubi, HttpStatus.OK);
     }
 
+    @GetMapping(APIConstant.CUBES_BY_DEPARTMENT + "/{departmentId}")
+    public ResponseEntity<List<Integer>> getCubesByDepartment(@PathVariable long departmentId) {
+        List<Integer> cubes = cubeService.getCubesByDepartment(departmentId);
+        return new ResponseEntity<>(cubes, HttpStatus.OK);
+    }
+
+
 }

@@ -8,4 +8,6 @@ import java.util.List;
 public interface ICubeService {
     CubeDto addCube(CubeDto cubeDto);
     List<CubeDto> getAllCubi();
+    List<Integer> getCubesByDepartment(long departmentId);
+
 }

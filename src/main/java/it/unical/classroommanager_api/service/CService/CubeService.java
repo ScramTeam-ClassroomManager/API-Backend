@@ -35,4 +35,13 @@ public class CubeService implements ICubeService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Integer> getCubesByDepartment(long departmentId) {
+        return cubeRepository.findByDepartmentId(departmentId)
+                .stream()
+                .map(Cube::getNumber)
+                .collect(Collectors.toList());
+    }
+
+
 }

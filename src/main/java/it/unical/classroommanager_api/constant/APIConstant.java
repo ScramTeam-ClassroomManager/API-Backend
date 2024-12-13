@@ -25,6 +25,7 @@ public class APIConstant{
     public static final String ADDCLASS = "/addClass";
     public static final String GETCLASSNAME = "/getClassName";
     public static final String CLASSROOMS_FILTERED = "/classroomsFiltered";
+    public static final String ALLCLASSROOMS_FILTERED = "/AllclassroomsFiltered";
     public static final String PENDINGREQUEST = "/pendingRequests";
     public static final String CHANGESTATUSREQUEST = "/changeStatusRequest";
     public static final String CUBEPATH = "/cube";

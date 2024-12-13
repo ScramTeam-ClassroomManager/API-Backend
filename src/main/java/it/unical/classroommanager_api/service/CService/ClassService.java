@@ -17,9 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public
-
-class ClassService implements IClassService {
+public class ClassService implements IClassService {
 
     @Autowired
     private ClassroomRepository classroomRepository;
@@ -140,6 +138,42 @@ class ClassService implements IClassService {
                 .orElseThrow(() -> new RuntimeException("Department not found with id: " + departmentId));
 
         List<Classroom> classrooms = classroomRepository.findByCube_Department(department);
+
+        if (cubeNumber != null) {
+            classrooms = classrooms.stream()
+                    .filter(classroom -> classroom.getCube().getNumber() == cubeNumber)
+                    .collect(Collectors.toList());
+        }
+        if (capability != null) {
+            classrooms = classrooms.stream()
+                    .filter(classroom -> classroom.getCapability() >= capability)
+                    .collect(Collectors.toList());
+        }
+        if (plugs != null) {
+            classrooms = classrooms.stream()
+                    .filter(classroom -> classroom.getNumSocket() >= plugs)
+                    .collect(Collectors.toList());
+        }
+        if (projector != null) {
+            classrooms = classrooms.stream()
+                    .filter(classroom -> classroom.isProjector() == projector)
+                    .collect(Collectors.toList());
+        }
+        if (type != null && !type.isEmpty()) {
+            classrooms = classrooms.stream()
+                    .filter(classroom -> classroom.getType() != null && classroom.getType().getType().equalsIgnoreCase(type))
+                    .collect(Collectors.toList());
+        }
+
+        return classrooms.stream()
+                .map(classroom -> modelMapper.map(classroom, ClassroomDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ClassroomDto> getFilteredAllClassrooms(Integer cubeNumber, Integer capability, Integer plugs, Boolean projector, String type) {
+
+        List<Classroom> classrooms = classroomRepository.findAll();
 
         if (cubeNumber != null) {
             classrooms = classrooms.stream()

@@ -112,6 +112,17 @@ public class ClassroomController {
         return new ResponseEntity<>(classrooms, HttpStatus.OK);
     }
 
+    @GetMapping(APIConstant.ALLCLASSROOMS_FILTERED)
+    public ResponseEntity<List<ClassroomDto>> getFilteredAllClassrooms(
+            @RequestParam(required = false) Integer cubeNumber,
+            @RequestParam(required = false) Integer capability,
+            @RequestParam(required = false) Integer plugs,
+            @RequestParam(required = false) Boolean projector,
+            @RequestParam(required = false) String type) {
+        List<ClassroomDto> classrooms = classService.getFilteredAllClassrooms(cubeNumber, capability, plugs, projector, type);
+        return new ResponseEntity<>(classrooms, HttpStatus.OK);
+    }
+
 
 
 

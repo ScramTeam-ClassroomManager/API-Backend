@@ -14,6 +14,7 @@ public interface IClassService {
     List<ClassroomDto> getClassroomsByDepartment(long departmentId);
     ClassroomDto getClassroomByName(String name);
     List<ClassroomDto> getFilteredClassrooms(Integer cubeNumber, Integer capability, Integer plugs, Boolean projector, String type, Long departmentId);
+    List<ClassroomDto> getFilteredAllClassrooms(Integer cubeNumber, Integer capability, Integer plugs, Boolean projector, String type);
 
 
 }

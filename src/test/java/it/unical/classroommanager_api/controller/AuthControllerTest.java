@@ -133,5 +133,20 @@ public class AuthControllerTest {
             assertEquals("Utente già esistente", e.getMessage());
         }
     }
+
+    @Test
+    void testGetUserNameBySerialNumber() {
+        UserDto userDto = new UserDto();
+        userDto.setFirstName("Nome");
+        userDto.setLastName("Cognome");
+
+        when(userService.findBySerialNumber(1234)).thenReturn(userDto);
+
+        ResponseEntity<Map<String, String>> response = authController.getUserNameBySerialNumber(1234);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Nome", response.getBody().get("firstName"));
+        assertEquals("Cognome", response.getBody().get("lastName"));
+    }
 }
 

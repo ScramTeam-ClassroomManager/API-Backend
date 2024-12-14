@@ -84,6 +84,22 @@ public class CubeControllerTest {
         verify(cubeService, times(1)).addCube(any(CubeDto.class));
     }
 
+    @Test
+    void getCubesByDepartment_ShouldReturnCubes() {
+        List<Integer> cubes = new ArrayList<>();
+        cubes.add(1);
+        cubes.add(2);
+
+        when(cubeService.getCubesByDepartment(1)).thenReturn(cubes);
+
+        ResponseEntity<List<Integer>> response = cubeController.getCubesByDepartment(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(cubes, response.getBody());
+
+        verify(cubeService, times(1)).getCubesByDepartment(1);
+    }
+
 
 
 }

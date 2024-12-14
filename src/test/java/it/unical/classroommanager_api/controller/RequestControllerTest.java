@@ -121,8 +121,88 @@ class RequestControllerTest {
         verify(requestService, times(1)).updateRequestStatus(requestId, newStatus, adminResponse);
     }
 
+    @Test
+    void deleteRequest() {
+        Long requestId = 1L;
+        String token = "Bearer some.token.value";
+        int userSerialNumber = 123;
 
+        when(httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn(token);
+        when(jwtService.extractSerialNumber(token.substring(7))).thenReturn(String.valueOf(userSerialNumber));
+        when(requestService.deleteRequest(requestId, userSerialNumber)).thenReturn(true);
 
+        ResponseEntity<Void> response = requestController.deleteRequest(requestId, httpServletRequest);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(requestService, times(1)).deleteRequest(requestId, userSerialNumber);
+
+    }
+
+    @Test
+    void testGetUserRequests() {
+        RequestDto request1 = new RequestDto();
+        request1.setId(1L);
+        request1.setReason("Richiesta per esame di Sistemi operativi");
+
+        RequestDto request2 = new RequestDto();
+        request2.setId(2L);
+        request2.setReason("Richiesta per seminario");
+
+        List<RequestDto> requestList = Arrays.asList(request1, request2);
+
+        String token = "Bearer some.token.value";
+        int userSerialNumber = 123;
+        when(httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn(token);
+        when(jwtService.extractSerialNumber(token.substring(7))).thenReturn(String.valueOf(userSerialNumber));
+        when(requestService.getRequestsByUser(userSerialNumber)).thenReturn(requestList);
+
+        ResponseEntity<List<RequestDto>> response = requestController.getUserRequests(httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(requestList, response.getBody());
+        verify(requestService, times(1)).getRequestsByUser(userSerialNumber);
+    }
+
+    @Test
+    void testGetAcceptedClassroomRequests() {
+        Long classroomId = 1L;
+        RequestDto request1 = new RequestDto();
+        request1.setId(1L);
+        request1.setReason("Richiesta per esame di Sistemi operativi");
+
+        RequestDto request2 = new RequestDto();
+        request2.setId(2L);
+        request2.setReason("Richiesta per seminario");
+
+        List<RequestDto> requestList = Arrays.asList(request1, request2);
+
+        when(requestService.getAcceptedClassroomRequests(classroomId)).thenReturn(requestList);
+
+        ResponseEntity<List<RequestDto>> response = requestController.getAcceptedClassroomRequests(classroomId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(requestList, response.getBody());
+        verify(requestService, times(1)).getAcceptedClassroomRequests(classroomId);
+    }
+
+    @Test
+    void testGetNonPendingRequests() {
+        RequestDto request1 = new RequestDto();
+        request1.setId(1L);
+        request1.setReason("Richiesta per esame di Sistemi operativi");
+
+        RequestDto request2 = new RequestDto();
+        request2.setId(2L);
+        request2.setReason("Richiesta per seminario");
+
+        List<RequestDto> requestList = Arrays.asList(request1, request2);
+        when(requestService.getNonPendingRequests()).thenReturn(requestList);
+
+        ResponseEntity<List<RequestDto>> response = requestController.getNonPendingRequests();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(requestList, response.getBody());
+        verify(requestService, times(1)).getNonPendingRequests();
+    }
 
 }
 

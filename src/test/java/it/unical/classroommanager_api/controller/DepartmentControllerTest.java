@@ -52,4 +52,17 @@ public class DepartmentControllerTest {
         assertEquals("Fisica", result.get(1).getDepartment());
         verify(departmentService, times(1)).getAllDepartments();
     }
+
+    @Test
+    void testGetDepartmentByClassroom() {
+        long id = 1L;
+        String department = "Matematica e Informatica";
+
+        when(departmentService.getDepartmentByClassroom(id)).thenReturn(department);
+
+        String result = departmentController.getDepartmentByClassroom(id);
+
+        assertEquals(department, result);
+        verify(departmentService, times(1)).getDepartmentByClassroom(id);
+    }
 }

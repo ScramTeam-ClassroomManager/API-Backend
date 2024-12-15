@@ -12,12 +12,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -61,6 +63,20 @@ public class AuthController {
                 "lastName", userDto.getLastName()
         );
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
+    }
+
+    @GetMapping(value = APIConstant.ALLUSERS)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = APIConstant.DELETEUSER + "/{serialNumber}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteUser(@PathVariable int serialNumber) {
+        userService.deleteUser(serialNumber);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private void authenticate(int serialNumber, String password) {

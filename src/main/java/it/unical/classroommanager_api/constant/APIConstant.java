@@ -21,6 +21,8 @@ public class APIConstant{
     public static final String ADDREQUEST = "/addRequest";
     public static final String USERREQUESTS = "/userRequests";
     public static final String DELETEREQUEST = "/deleteRequest";
+    public static final String ALLUSERS = "/users";
+    public static final String DELETEUSER = "/deleteUser";
 
     public static final String ADDCLASS = "/addClass";
     public static final String GETCLASSNAME = "/getClassName";

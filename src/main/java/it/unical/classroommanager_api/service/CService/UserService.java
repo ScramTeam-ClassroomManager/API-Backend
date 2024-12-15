@@ -11,11 +11,12 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -46,6 +47,20 @@ public class UserService implements IUserService {
         user.setPassword(new BCryptPasswordEncoder().encode(registerDto.getPassword()));
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDto.class);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteUser(Integer serialNumber) {
+        User user = userRepository.findBySerialNumber(serialNumber)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + serialNumber));
+        userRepository.delete(user);
     }
 
 }

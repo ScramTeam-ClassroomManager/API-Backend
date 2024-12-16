@@ -14,11 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +53,19 @@ public class AuthController {
     public ResponseEntity<UserDto> register(@RequestBody @Valid RegisterDto registerDto) {
         UserDto createdUser = userService.registerUser(registerDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = APIConstant.REGISTERADMIN)
+    public ResponseEntity<Map<String, Object>> registerAdmin(@RequestBody @Valid RegisterDto registerDto) {
+        UserDto createdUser = userService.registerUser(registerDto);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(String.valueOf(registerDto.getSerialNumber()));
+
+        String token = jwtService.generateToken(userDetails);
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", createdUser);
+        response.put("token", token);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping(APIConstant.GETCOMPLETENAMEUSER + "/{serialNumber}")

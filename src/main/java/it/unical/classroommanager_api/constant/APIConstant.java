@@ -11,6 +11,7 @@ public class APIConstant{
     //END-POINT
     public static final String LOGIN = "/login";
     public static final String REGISTER = "/register";
+    public static final String REGISTERADMIN = "/registeradmin";
     public static final String GETCOMPLETENAMEUSER = "/getFirstSecondUser";
     public static final String ALLCLASS = "/classrooms";
     public static final String BOOKING = "/booking";

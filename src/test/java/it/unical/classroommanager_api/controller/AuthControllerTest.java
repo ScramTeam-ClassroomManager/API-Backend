@@ -135,6 +135,38 @@ public class AuthControllerTest {
     }
 
     @Test
+    void testRegisterAdmin_Successful() {
+        RegisterDto registerDto = new RegisterDto();
+        registerDto.setSerialNumber(1234);
+        registerDto.setFirstName("Nome");
+        registerDto.setLastName("Cognome");
+        registerDto.setEmail("nomcogn@example.com");
+        registerDto.setPassword("password");
+        registerDto.setRole("ADMIN");
+
+        UserDto userDto = new UserDto();
+        userDto.setId(1L);
+        userDto.setSerialNumber(1234);
+        userDto.setFirstName("Nome");
+        userDto.setLastName("Cognome");
+        userDto.setEmail("nomcogn@example.com");
+        userDto.setRole(Role.ADMIN);
+
+        when(userService.registerUser(any(RegisterDto.class))).thenReturn(userDto);
+
+        ResponseEntity<Map<String, Object>> response = authController.registerAdmin(registerDto);
+        Map<String, Object> responseBody = response.getBody();
+
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(String.valueOf(registerDto.getSerialNumber()));
+        String token = jwtService.generateToken(userDetails);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(userDto, responseBody.get("user"));
+        assertEquals(token, responseBody.get("token"));
+
+    }
+
+    @Test
     void testGetUserNameBySerialNumber() {
         UserDto userDto = new UserDto();
         userDto.setFirstName("Nome");
